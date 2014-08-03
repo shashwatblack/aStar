@@ -1,0 +1,8 @@
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\bin\Debug\aStar.exe.config
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\bin\Debug\aStar.exe
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\bin\Debug\aStar.pdb
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\obj\Debug\aStar.csprojResolveAssemblyReference.cache
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\obj\Debug\aStar.MapForm.resources
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\obj\Debug\aStar.csproj.GenerateResource.Cache
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\obj\Debug\aStar.exe
+C:\Users\Shashwat\Documents\Visual Studio 2013\Projects\aStar\obj\Debug\aStar.pdb
