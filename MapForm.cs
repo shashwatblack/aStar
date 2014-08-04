@@ -13,11 +13,22 @@ namespace aStar
 {
     public partial class MapForm : Form
     {
-        private int[] gridSize = {20,20};
+        private int[] gridSize;
         public MapForm()
         {
             InitializeComponent();
             Reset();
+            initMap();
+        }
+
+        private async void initMap()
+        {
+            //System.Threading.Thread.Sleep(50);
+            await Task.Delay(300);
+            //Draw start and end nodes
+            System.Drawing.Graphics g = pictureBoxMapArea.CreateGraphics();
+            g.FillRectangle(new SolidBrush(Color.Green), Map.node_start.x * gridSize[0], Map.node_start.y * gridSize[1], gridSize[0], gridSize[1]);
+            g.FillRectangle(new SolidBrush(Color.Red), Map.node_goal.x * gridSize[0], Map.node_goal.y * gridSize[1], gridSize[0], gridSize[1]);
         }
 
         private void buttonFindPath_Click(object sender, EventArgs e)
@@ -38,23 +49,28 @@ namespace aStar
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(boxPos.X, boxPos.Y, gridSize[0], gridSize[1]);
             Color color;
             if (this.radioStart.Checked){
-                color = Color.Blue;
-                //change start pos in code
+                color = Color.Green;
+                //change start node in Map class
+                Map.node_start = new Node(null, Map.node_goal, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
             }
             else if (this.radioGoal.Checked){
                 color = Color.Red;
-                //change goal pos in code
+                //change goal node in Map class
+                Map.node_goal = new Node(null, null, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
             }
             else if (this.radioWall.Checked){
                 color = Color.Black;
+                //draw a wall on map
                 Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = -1;
             }
             else{
                 color = Color.Khaki;
+                //clear the position of any entity
                 Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = 1;
             }
             g.FillRectangle(new SolidBrush(color), rectangle);
         }
+        
         private void drawSolution(ArrayList solutionPathList)
         {
             int yMax = Map.Mapdata.GetUpperBound(0);
@@ -66,14 +82,19 @@ namespace aStar
                 for (int i = 0; i <= xMax; i++)
                 {
                     bool solutionNode = false;
+                    Node tmp = new Node(null, null, 0, i, j);
                     if (solutionPathList != null)
                     {
                         foreach (Node n in solutionPathList)
                         {
-                            Node tmp = new Node(null, null, 0, i, j);
-
-                            if (n.isMatch(tmp))
-                            {
+                            //if (tmp.isMatch(Map.node_start)) {
+                            //    solutionNode = false;
+                            //    break;
+                            //} else if (tmp.isMatch(Map.node_goal)) {
+                            //    solutionNode = false;
+                            //    break;
+                            //} else 
+                            if (n.isMatch(tmp)) {
                                 solutionNode = true;
                                 break;
                             }
@@ -83,7 +104,15 @@ namespace aStar
                     {
                         solutionNode = false;
                     }
-                    if (solutionNode)
+                    if (tmp.isMatch(Map.node_start))
+                    {
+                        color = Color.Green;
+                    }
+                    else if (tmp.isMatch(Map.node_goal))
+                    {
+                        color = Color.Red;
+                    }
+                    else if (solutionNode)
                     {
                         //Console.Write("o "); //solution path
                         color = Color.Blue;
@@ -93,7 +122,7 @@ namespace aStar
                         //Console.Write("# "); //wall
                         color = Color.Black;
                     }
-                    else
+                    else 
                     {
                         //Console.Write(". "); //road
                         color = Color.Khaki;
@@ -110,10 +139,10 @@ namespace aStar
             ArrayList SolutionPathList = new ArrayList();
 
             //Create a node containing the goal state node_goal
-            Node node_goal = new Node(null, null, 1, 15, 15);
+            Node node_goal = Map.node_goal;
 
             //Create a node containing the start state node_start
-            Node node_start = new Node(null, node_goal, 1, 0, 0);
+            Node node_start = Map.node_start;
 
 
             //Create OPEN and CLOSED list
@@ -208,25 +237,47 @@ namespace aStar
 
             //Map.PrintSolution (SolutionPathList);
             //Console.ReadLine ();
-            this.drawSolution(SolutionPathList);
+            if (SolutionPathList != null)
+                this.drawSolution(SolutionPathList);
         }
 
         private void Reset()
         {
-            int yMax = Map.Mapdata.GetUpperBound(0);
-            int xMax = Map.Mapdata.GetUpperBound(1);
-            for (int j = 0; j <= yMax; j++)
+            int yMax = Map.mapRows = (int)this.numericUpDownHeight.Value;
+            int xMax = Map.mapCols = (int)this.numericUpDownWidth.Value;
+            //calculate gridSize
+            gridSize = new int[] {this.pictureBoxMapArea.Width/xMax, this.pictureBoxMapArea.Height/yMax};
+            //define mapData and nodes
+            Map.Mapdata = new int[yMax, xMax];
+            Map.node_goal = new Node(null, null, 1, Map.Mapdata.GetUpperBound(1), Map.Mapdata.GetUpperBound(0));
+            Map.node_start = new Node(null, Map.node_goal, 1, 0, 0);
+            //clear the map
+            for (int j = 0; j < xMax; j++)
             {
-                for (int i = 0; i <= xMax; i++)
+                for (int i = 0; i < yMax; i++)
                 {
                     Map.Mapdata[i, j] = 1;
                 }
             }
-            drawSolution(null);
-
+            //////reset gridSize controls
+            //////this.numericUpDownWidth.Value = 20;
+            //////this.numericUpDownHeight.Value = 20;
+            //draw grid
+            //draw null solution
+            this.drawSolution(null);
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
+
+        private void numericUpDownWidth_ValueChanged(object sender, EventArgs e)
+        {
+            Reset();
+        }
+
+        private void numericUpDownHeight_ValueChanged(object sender, EventArgs e)
         {
             Reset();
         }
