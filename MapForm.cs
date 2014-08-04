@@ -17,10 +17,10 @@ namespace aStar
         public MapForm()
         {
             InitializeComponent();
-            //Reset();
+            Reset();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonFindPath_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Hello World!", "Hi", MessageBoxButtons.OK);
             //System.Drawing.Graphics graphics = this.pictureBox1.CreateGraphics();
@@ -30,30 +30,43 @@ namespace aStar
             this.solve();
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBoxMapArea_MouseClick(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("PictureBox clicked");
             Point boxPos = new Point(gridSize[0] * (int)(e.X / gridSize[0]), gridSize[1] * (int)(e.Y / gridSize[1]));
-            System.Drawing.Graphics g = pictureBox1.CreateGraphics();
+            System.Drawing.Graphics g = pictureBoxMapArea.CreateGraphics();
             //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(100, 100, 30, 30);
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(boxPos.X, boxPos.Y, gridSize[0], gridSize[1]);
-
-            Color color = this.radioButton1.Checked ? Color.Blue : this.radioButton2.Checked ? Color.Red : Color.Black;
+            Color color;
+            if (this.radioStart.Checked){
+                color = Color.Blue;
+                //change start pos in code
+            }
+            else if (this.radioGoal.Checked){
+                color = Color.Red;
+                //change goal pos in code
+            }
+            else if (this.radioWall.Checked){
+                color = Color.Black;
+                Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = -1;
+            }
+            else{
+                color = Color.Khaki;
+                Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = 1;
+            }
             g.FillRectangle(new SolidBrush(color), rectangle);
-            Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = -1;
         }
         private void drawSolution(ArrayList solutionPathList)
         {
             int yMax = Map.Mapdata.GetUpperBound(0);
             int xMax = Map.Mapdata.GetUpperBound(1);
-            System.Drawing.Graphics g = pictureBox1.CreateGraphics();
+            System.Drawing.Graphics g = pictureBoxMapArea.CreateGraphics();
             Color color;
             for (int j = 0; j <= yMax; j++)
             {
                 for (int i = 0; i <= xMax; i++)
                 {
                     bool solutionNode = false;
-                    try
+                    if (solutionPathList != null)
                     {
                         foreach (Node n in solutionPathList)
                         {
@@ -66,7 +79,7 @@ namespace aStar
                             }
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
                         solutionNode = false;
                     }
@@ -200,11 +213,22 @@ namespace aStar
 
         private void Reset()
         {
-            for (int j = 0; j <= Map.Mapdata.GetUpperBound(0); j++)
-                for (int i = 0; i <= Map.Mapdata.GetUpperBound(1); i++)
+            int yMax = Map.Mapdata.GetUpperBound(0);
+            int xMax = Map.Mapdata.GetUpperBound(1);
+            for (int j = 0; j <= yMax; j++)
+            {
+                for (int i = 0; i <= xMax; i++)
+                {
                     Map.Mapdata[i, j] = 1;
+                }
+            }
             drawSolution(null);
 
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            Reset();
         }
 
     }

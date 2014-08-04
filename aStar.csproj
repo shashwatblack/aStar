@@ -7,7 +7,7 @@
     <ProjectGuid>{E061721C-74B8-4B0C-B558-88EC02D966FE}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
     <AssemblyKeyContainerName />
     <AssemblyName>aStar</AssemblyName>
     <AssemblyOriginatorKeyFile />
@@ -104,14 +104,24 @@
     <Compile Include="NodeComparer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SortedCostNodeList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Content Include="App.ico" />
+    <Content Include="logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
