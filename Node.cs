@@ -75,29 +75,35 @@ namespace aStar
 		{
 			ArrayList successors = new ArrayList ();
 
-            //int[,] combinations = {{1, 0},{-1, 0},{0, 1}, {0, -1}};
-            //for (int i = 0; i < combinations.GetLength(0); i++)
-            //{
-            //    int xd = combinations[i, 0], yd = combinations[i, 1];
-            //    if (Map.getMap(x + xd, y + yd) != -1)
-            //    {
-            //        Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
-            //        if (!n.isMatch(this.parentNode) && !n.isMatch(this))
-            //            successors.Add(n);
-
-            //    }
-            //}
-            for (int xd=-1;xd<=1;xd++)
+            if (MapForm.allowDiagonal)
             {
-                for (int yd=-1;yd<=1;yd++)
+                for (int xd = -1; xd <= 1; xd++)
                 {
-                    if (Map.getMap (x+xd,y+yd) !=-1)
+                    for (int yd = -1; yd <= 1; yd++)
                     {
-                        //Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
-                        //Node n = new Node(this, this._goalNode, 1, x + xd, y + yd);
-                        Node n = new Node(this, this._goalNode, (int)(Math.Sqrt(xd*xd+yd*yd)), x + xd, y + yd);
+                        if (Map.getMap(x + xd, y + yd) != -1)
+                        {
+                            //Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
+                            //Node n = new Node(this, this._goalNode, 1, x + xd, y + yd);
+                            Node n = new Node(this, this._goalNode, (int)(Math.Sqrt(xd * xd + yd * yd)), x + xd, y + yd);
+                            if (!n.isMatch(this.parentNode) && !n.isMatch(this))
+                                successors.Add(n);
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int[,] combinations = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+                for (int i = 0; i < combinations.GetLength(0); i++)
+                {
+                    int xd = combinations[i, 0], yd = combinations[i, 1];
+                    if (Map.getMap(x + xd, y + yd) != -1)
+                    {
+                        Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
                         if (!n.isMatch(this.parentNode) && !n.isMatch(this))
-                            successors.Add (n);
+                            successors.Add(n);
 
                     }
                 }

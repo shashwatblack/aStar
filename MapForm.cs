@@ -13,6 +13,7 @@ namespace aStar
 {
     public partial class MapForm : Form
     {
+        public static bool allowDiagonal = false;
         private int[] gridSize;
         public MapForm()
         {
@@ -131,6 +132,7 @@ namespace aStar
                 }
                 //Console.WriteLine("");
             }
+            if (solutionPathList != null) this.labelCost.Text = ("Total Weight: " + solutionPathList.ToArray().GetUpperBound(0));
         }
 
         private void solve()
@@ -183,7 +185,7 @@ namespace aStar
 
                     //if node_successor is on the OPEN list but the existing one is as good
                     //or better then discard this successor and continue
-                    if (oFound > 0)
+                    if (oFound >= 0)
                     {
                         Node existing_node = OPEN.NodeAt(oFound);
                         if (existing_node.CompareTo(node_current) <= 0)
@@ -196,7 +198,7 @@ namespace aStar
 
                     //if node_successor is on the CLOSED list but the existing one is as good
                     //or better then discard this successor and continue;
-                    if (cFound > 0)
+                    if (cFound >= 0)
                     {
                         Node existing_node = CLOSED.NodeAt(cFound);
                         if (existing_node.CompareTo(node_current) <= 0)
@@ -280,6 +282,12 @@ namespace aStar
         private void numericUpDownHeight_ValueChanged(object sender, EventArgs e)
         {
             Reset();
+        }
+
+        private void checkBoxDiagonal_CheckedChanged(object sender, EventArgs e)
+        {
+            //Reset();
+            MapForm.allowDiagonal = this.checkBoxDiagonal.Checked;
         }
 
     }

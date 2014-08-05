@@ -40,6 +40,8 @@
             this.groupBoxGridSize = new System.Windows.Forms.GroupBox();
             this.numericUpDownWidth = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeight = new System.Windows.Forms.NumericUpDown();
+            this.labelCost = new System.Windows.Forms.Label();
+            this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMapArea)).BeginInit();
             this.groupBoxDrawType.SuspendLayout();
             this.groupBoxGridSize.SuspendLayout();
@@ -137,7 +139,7 @@
             // 
             this.groupBoxGridSize.Controls.Add(this.numericUpDownHeight);
             this.groupBoxGridSize.Controls.Add(this.numericUpDownWidth);
-            this.groupBoxGridSize.Location = new System.Drawing.Point(348, 183);
+            this.groupBoxGridSize.Location = new System.Drawing.Point(348, 205);
             this.groupBoxGridSize.Name = "groupBoxGridSize";
             this.groupBoxGridSize.Size = new System.Drawing.Size(75, 72);
             this.groupBoxGridSize.TabIndex = 4;
@@ -180,11 +182,32 @@
             0});
             this.numericUpDownHeight.ValueChanged += new System.EventHandler(this.numericUpDownHeight_ValueChanged);
             // 
+            // labelCost
+            // 
+            this.labelCost.AutoSize = true;
+            this.labelCost.Location = new System.Drawing.Point(348, 284);
+            this.labelCost.Name = "labelCost";
+            this.labelCost.Size = new System.Drawing.Size(0, 13);
+            this.labelCost.TabIndex = 5;
+            // 
+            // checkBoxDiagonal
+            // 
+            this.checkBoxDiagonal.AutoSize = true;
+            this.checkBoxDiagonal.Location = new System.Drawing.Point(348, 182);
+            this.checkBoxDiagonal.Name = "checkBoxDiagonal";
+            this.checkBoxDiagonal.Size = new System.Drawing.Size(68, 17);
+            this.checkBoxDiagonal.TabIndex = 6;
+            this.checkBoxDiagonal.Text = "Diagonal";
+            this.checkBoxDiagonal.UseVisualStyleBackColor = true;
+            this.checkBoxDiagonal.CheckedChanged += new System.EventHandler(this.checkBoxDiagonal_CheckedChanged);
+            // 
             // MapForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 340);
+            this.Controls.Add(this.checkBoxDiagonal);
+            this.Controls.Add(this.labelCost);
             this.Controls.Add(this.groupBoxGridSize);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.groupBoxDrawType);
@@ -200,6 +223,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -216,6 +240,8 @@
         private System.Windows.Forms.GroupBox groupBoxGridSize;
         private System.Windows.Forms.NumericUpDown numericUpDownHeight;
         private System.Windows.Forms.NumericUpDown numericUpDownWidth;
+        private System.Windows.Forms.Label labelCost;
+        private System.Windows.Forms.CheckBox checkBoxDiagonal;
     }
 }
 
