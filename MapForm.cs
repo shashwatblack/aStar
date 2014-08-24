@@ -53,11 +53,19 @@ namespace aStar
                 color = Color.Green;
                 //change start node in Map class
                 Map.node_start = new Node(null, Map.node_goal, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
+                //clear wall if any
+                Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = 1;
+                //reset ui
+                this.drawSolution(null);
             }
             else if (this.radioGoal.Checked){
                 color = Color.Red;
                 //change goal node in Map class
                 Map.node_goal = new Node(null, null, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
+                //clear wall if any
+                Map.Mapdata[(int)(e.Y/gridSize[1]), (int)(e.X/gridSize[0])] = 1;
+                //reset ui
+                this.drawSolution(null);
             }
             else if (this.radioWall.Checked){
                 color = Color.Black;
@@ -132,7 +140,17 @@ namespace aStar
                 }
                 //Console.WriteLine("");
             }
-            if (solutionPathList != null) this.labelCost.Text = ("Total Weight: " + solutionPathList.ToArray().GetUpperBound(0));
+            if (solutionPathList != null)
+            {
+                int cost = -1;
+                foreach (Node n in solutionPathList)
+                {
+                    cost = n.totalCost>cost?n.totalCost:cost;
+                    break;
+                }
+                Console.WriteLine("Total Weight: " + cost);
+                this.labelCost.Text = ("Total Weight: " + solutionPathList.ToArray().GetUpperBound(0));
+            }
         }
 
         private void solve()
@@ -145,6 +163,7 @@ namespace aStar
 
             //Create a node containing the start state node_start
             Node node_start = Map.node_start;
+            //node_start.totalCost = 10;
 
 
             //Create OPEN and CLOSED list
@@ -188,7 +207,7 @@ namespace aStar
                     if (oFound >= 0)
                     {
                         Node existing_node = OPEN.NodeAt(oFound);
-                        if (existing_node.CompareTo(node_current) <= 0)
+                        if (existing_node.CompareTo(node_successor) <= 0)
                             continue;
                     }
 
@@ -201,7 +220,7 @@ namespace aStar
                     if (cFound >= 0)
                     {
                         Node existing_node = CLOSED.NodeAt(cFound);
-                        if (existing_node.CompareTo(node_current) <= 0)
+                        if (existing_node.CompareTo(node_successor) <= 0)
                             continue;
                     }
 

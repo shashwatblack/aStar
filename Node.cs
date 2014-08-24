@@ -52,7 +52,7 @@ namespace aStar
 		{
 			double xd = this.x - this._goalNode .x ;
 			double yd = this.y - this._goalNode .y ;
-			return Math.Sqrt((xd*xd) + (yd*yd));
+			return 10*Math.Sqrt((xd*xd) + (yd*yd));
 		}
 		
 		public int CompareTo(object obj)
@@ -84,8 +84,9 @@ namespace aStar
                         if (Map.getMap(x + xd, y + yd) != -1)
                         {
                             //Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
-                            //Node n = new Node(this, this._goalNode, 1, x + xd, y + yd);
-                            Node n = new Node(this, this._goalNode, (int)(Math.Sqrt(xd * xd + yd * yd)), x + xd, y + yd);
+                            //Node n = new Node(this, this._goalNode, 10, x + xd, y + yd);
+                            //Node n = new Node(this, this._goalNode, (int)(10 * Math.Sqrt(xd * xd + yd * yd)), x + xd, y + yd);
+                            Node n = new Node(this, this._goalNode, (xd==0||yd==0)?10:14, x + xd, y + yd);
                             if (!n.isMatch(this.parentNode) && !n.isMatch(this))
                                 successors.Add(n);
 
@@ -101,7 +102,7 @@ namespace aStar
                     int xd = combinations[i, 0], yd = combinations[i, 1];
                     if (Map.getMap(x + xd, y + yd) != -1)
                     {
-                        Node n = new Node(this, this._goalNode, Map.getMap(x + xd, y + yd), x + xd, y + yd);
+                        Node n = new Node(this, this._goalNode, 10, x + xd, y + yd);
                         if (!n.isMatch(this.parentNode) && !n.isMatch(this))
                             successors.Add(n);
 
