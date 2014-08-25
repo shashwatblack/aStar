@@ -38,20 +38,24 @@
             this.radioStart = new System.Windows.Forms.RadioButton();
             this.buttonReset = new System.Windows.Forms.Button();
             this.groupBoxGridSize = new System.Windows.Forms.GroupBox();
-            this.numericUpDownWidth = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeight = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownWidth = new System.Windows.Forms.NumericUpDown();
             this.labelCost = new System.Windows.Forms.Label();
             this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMapArea)).BeginInit();
             this.groupBoxDrawType.SuspendLayout();
             this.groupBoxGridSize.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonFindPath
             // 
-            this.buttonFindPath.Location = new System.Drawing.Point(348, 10);
+            this.buttonFindPath.Location = new System.Drawing.Point(3, 3);
             this.buttonFindPath.Name = "buttonFindPath";
             this.buttonFindPath.Size = new System.Drawing.Size(75, 23);
             this.buttonFindPath.TabIndex = 0;
@@ -62,9 +66,11 @@
             // pictureBoxMapArea
             // 
             this.pictureBoxMapArea.BackColor = System.Drawing.Color.Khaki;
-            this.pictureBoxMapArea.Location = new System.Drawing.Point(10, 10);
+            this.pictureBoxMapArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxMapArea.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxMapArea.Name = "pictureBoxMapArea";
-            this.pictureBoxMapArea.Size = new System.Drawing.Size(320, 320);
+            this.pictureBoxMapArea.Padding = new System.Windows.Forms.Padding(2);
+            this.pictureBoxMapArea.Size = new System.Drawing.Size(334, 334);
             this.pictureBoxMapArea.TabIndex = 1;
             this.pictureBoxMapArea.TabStop = false;
             this.pictureBoxMapArea.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMapArea_MouseClick);
@@ -75,9 +81,9 @@
             this.groupBoxDrawType.Controls.Add(this.radioWall);
             this.groupBoxDrawType.Controls.Add(this.radioGoal);
             this.groupBoxDrawType.Controls.Add(this.radioStart);
-            this.groupBoxDrawType.Location = new System.Drawing.Point(348, 68);
+            this.groupBoxDrawType.Location = new System.Drawing.Point(3, 63);
             this.groupBoxDrawType.Name = "groupBoxDrawType";
-            this.groupBoxDrawType.Size = new System.Drawing.Size(75, 108);
+            this.groupBoxDrawType.Size = new System.Drawing.Size(75, 104);
             this.groupBoxDrawType.TabIndex = 2;
             this.groupBoxDrawType.TabStop = false;
             this.groupBoxDrawType.Text = "Draw type";
@@ -127,7 +133,7 @@
             // 
             // buttonReset
             // 
-            this.buttonReset.Location = new System.Drawing.Point(348, 39);
+            this.buttonReset.Location = new System.Drawing.Point(3, 33);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(75, 23);
             this.buttonReset.TabIndex = 3;
@@ -139,30 +145,12 @@
             // 
             this.groupBoxGridSize.Controls.Add(this.numericUpDownHeight);
             this.groupBoxGridSize.Controls.Add(this.numericUpDownWidth);
-            this.groupBoxGridSize.Location = new System.Drawing.Point(348, 205);
+            this.groupBoxGridSize.Location = new System.Drawing.Point(3, 203);
             this.groupBoxGridSize.Name = "groupBoxGridSize";
-            this.groupBoxGridSize.Size = new System.Drawing.Size(75, 72);
+            this.groupBoxGridSize.Size = new System.Drawing.Size(75, 75);
             this.groupBoxGridSize.TabIndex = 4;
             this.groupBoxGridSize.TabStop = false;
             this.groupBoxGridSize.Text = "Grid Size";
-            // 
-            // numericUpDownWidth
-            // 
-            this.numericUpDownWidth.Location = new System.Drawing.Point(7, 19);
-            this.numericUpDownWidth.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownWidth.Name = "numericUpDownWidth";
-            this.numericUpDownWidth.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownWidth.TabIndex = 0;
-            this.numericUpDownWidth.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
-            this.numericUpDownWidth.ValueChanged += new System.EventHandler(this.numericUpDownWidth_ValueChanged);
             // 
             // numericUpDownHeight
             // 
@@ -182,10 +170,28 @@
             0});
             this.numericUpDownHeight.ValueChanged += new System.EventHandler(this.numericUpDownHeight_ValueChanged);
             // 
+            // numericUpDownWidth
+            // 
+            this.numericUpDownWidth.Location = new System.Drawing.Point(7, 19);
+            this.numericUpDownWidth.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownWidth.Name = "numericUpDownWidth";
+            this.numericUpDownWidth.Size = new System.Drawing.Size(57, 20);
+            this.numericUpDownWidth.TabIndex = 0;
+            this.numericUpDownWidth.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.numericUpDownWidth.ValueChanged += new System.EventHandler(this.numericUpDownWidth_ValueChanged);
+            // 
             // labelCost
             // 
             this.labelCost.AutoSize = true;
-            this.labelCost.Location = new System.Drawing.Point(348, 284);
+            this.labelCost.Location = new System.Drawing.Point(3, 285);
             this.labelCost.Name = "labelCost";
             this.labelCost.Size = new System.Drawing.Size(0, 13);
             this.labelCost.TabIndex = 5;
@@ -193,7 +199,7 @@
             // checkBoxDiagonal
             // 
             this.checkBoxDiagonal.AutoSize = true;
-            this.checkBoxDiagonal.Location = new System.Drawing.Point(348, 182);
+            this.checkBoxDiagonal.Location = new System.Drawing.Point(3, 178);
             this.checkBoxDiagonal.Name = "checkBoxDiagonal";
             this.checkBoxDiagonal.Size = new System.Drawing.Size(68, 17);
             this.checkBoxDiagonal.TabIndex = 6;
@@ -201,29 +207,66 @@
             this.checkBoxDiagonal.UseVisualStyleBackColor = true;
             this.checkBoxDiagonal.CheckedChanged += new System.EventHandler(this.checkBoxDiagonal_CheckedChanged);
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.pictureBoxMapArea, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 340);
+            this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.buttonFindPath, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelCost, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.checkBoxDiagonal, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.groupBoxGridSize, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.buttonReset, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.groupBoxDrawType, 0, 2);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(343, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(94, 334);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
             // MapForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 340);
-            this.Controls.Add(this.checkBoxDiagonal);
-            this.Controls.Add(this.labelCost);
-            this.Controls.Add(this.groupBoxGridSize);
-            this.Controls.Add(this.buttonReset);
-            this.Controls.Add(this.groupBoxDrawType);
-            this.Controls.Add(this.pictureBoxMapArea);
-            this.Controls.Add(this.buttonFindPath);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(456, 379);
             this.Name = "MapForm";
             this.Text = "A Star Path Finding";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MapForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMapArea)).EndInit();
             this.groupBoxDrawType.ResumeLayout(false);
             this.groupBoxDrawType.PerformLayout();
             this.groupBoxGridSize.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -242,6 +285,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDownWidth;
         private System.Windows.Forms.Label labelCost;
         private System.Windows.Forms.CheckBox checkBoxDiagonal;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     }
 }
 

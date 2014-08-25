@@ -15,6 +15,9 @@ namespace aStar
     {
         public static bool allowDiagonal = false;
         private int[] gridSize;
+        private Boolean longWallEnabled = false;
+        private int[] longWallStartPoint = new int[2];
+        
         public MapForm()
         {
             InitializeComponent();
@@ -44,40 +47,80 @@ namespace aStar
 
         private void pictureBoxMapArea_MouseClick(object sender, MouseEventArgs e)
         {
-            Point boxPos = new Point(gridSize[0] * (int)(e.X / gridSize[0]), gridSize[1] * (int)(e.Y / gridSize[1]));
-            System.Drawing.Graphics g = pictureBoxMapArea.CreateGraphics();
-            //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(100, 100, 30, 30);
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(boxPos.X, boxPos.Y, gridSize[0], gridSize[1]);
-            Color color;
-            if (this.radioStart.Checked){
-                color = Color.Green;
-                //change start node in Map class
-                Map.node_start = new Node(null, Map.node_goal, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
-                //clear wall if any
-                Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = 1;
-                //reset ui
-                this.drawSolution(null);
+            try
+            {
+                Point boxPos = new Point(gridSize[0] * (int)(e.X / gridSize[0]), gridSize[1] * (int)(e.Y / gridSize[1]));
+                System.Drawing.Graphics g = pictureBoxMapArea.CreateGraphics();
+                //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(100, 100, 30, 30);
+                System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(boxPos.X, boxPos.Y, gridSize[0], gridSize[1]);
+                Color color;
+                if (this.radioStart.Checked)
+                {
+                    color = Color.Green;
+                    //change start node in Map class
+                    Map.node_start = new Node(null, Map.node_goal, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
+                    //clear wall if any
+                    Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = 1;
+                    //reset ui
+                    this.drawSolution(null);
+                }
+                else if (this.radioGoal.Checked)
+                {
+                    color = Color.Red;
+                    //change goal node in Map class
+                    Map.node_goal = new Node(null, null, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
+                    //clear wall if any
+                    Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = 1;
+                    //reset ui
+                    this.drawSolution(null);
+                }
+                else if (this.radioWall.Checked)
+                {
+                    color = Color.Black;
+                    if (Form.ModifierKeys == Keys.Control)
+                    {
+                        if (this.longWallEnabled)
+                        {
+                            //draw line from start point to this point
+                            foreach (Point p in BresenhamSolution.GetPointsOnLine(longWallStartPoint[0], longWallStartPoint[1],
+                                (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[0])))
+                            {
+                                Map.Mapdata[p.Y, p.X] = -1;
+                                Point boxP = new Point(gridSize[0] * p.X, gridSize[1] * p.Y);
+                                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(boxP.X, boxP.Y, gridSize[0], gridSize[1]);
+                                g.FillRectangle(new SolidBrush(color), rect);
+                            }
+                            //redefine start point = this point
+                            longWallStartPoint[0] = (int)(e.X / gridSize[0]);
+                            longWallStartPoint[1] = (int)(e.Y / gridSize[1]);
+                        }
+                        else
+                        {
+                            //draw wall on map
+                            Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = -1;
+                            //start point = this point
+                            longWallStartPoint[0] = (int)(e.X / gridSize[0]);
+                            longWallStartPoint[1] = (int)(e.Y / gridSize[1]);
+                            this.longWallEnabled = true;
+                        }
+                    }
+                    else
+                    {
+                        //draw a wall on map
+                        Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = -1;
+                    }
+                }
+                else
+                {
+                    color = Color.Khaki;
+                    //clear the position of any entity
+                    Map.Mapdata[(int)(e.Y / gridSize[1]), (int)(e.X / gridSize[0])] = 1;
+                }
+                g.FillRectangle(new SolidBrush(color), rectangle);
+            } catch (IndexOutOfRangeException ex) {
+                Console.WriteLine("IndexOutOfRangeException: " + ex.Message);
+                // ignore and move on
             }
-            else if (this.radioGoal.Checked){
-                color = Color.Red;
-                //change goal node in Map class
-                Map.node_goal = new Node(null, null, 1, (int)(e.X / gridSize[0]), (int)(e.Y / gridSize[1]));
-                //clear wall if any
-                Map.Mapdata[(int)(e.Y/gridSize[1]), (int)(e.X/gridSize[0])] = 1;
-                //reset ui
-                this.drawSolution(null);
-            }
-            else if (this.radioWall.Checked){
-                color = Color.Black;
-                //draw a wall on map
-                Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = -1;
-            }
-            else{
-                color = Color.Khaki;
-                //clear the position of any entity
-                Map.Mapdata[(int)(e.Y / gridSize[1]) , (int)(e.X / gridSize[0])] = 1;
-            }
-            g.FillRectangle(new SolidBrush(color), rectangle);
         }
         
         private void drawSolution(ArrayList solutionPathList)
@@ -96,66 +139,45 @@ namespace aStar
                     {
                         foreach (Node n in solutionPathList)
                         {
-                            //if (tmp.isMatch(Map.node_start)) {
-                            //    solutionNode = false;
-                            //    break;
-                            //} else if (tmp.isMatch(Map.node_goal)) {
-                            //    solutionNode = false;
-                            //    break;
-                            //} else 
                             if (n.isMatch(tmp)) {
                                 solutionNode = true;
                                 break;
                             }
                         }
                     }
-                    else
-                    {
-                        solutionNode = false;
-                    }
-                    if (tmp.isMatch(Map.node_start))
-                    {
+
+                    if (tmp.isMatch(Map.node_start)) {
                         color = Color.Green;
-                    }
-                    else if (tmp.isMatch(Map.node_goal))
-                    {
+                    } else if (tmp.isMatch(Map.node_goal)) {
                         color = Color.Red;
-                    }
-                    else if (solutionNode)
-                    {
-                        //Console.Write("o "); //solution path
+                    } else if (solutionNode) {
                         color = Color.Blue;
-                    }
-                    else if (Map.getMap(i, j) == -1)
-                    {
-                        //Console.Write("# "); //wall
+                    } else if (Map.getMap(i, j) == -1) {
                         color = Color.Black;
-                    }
-                    else 
-                    {
-                        //Console.Write(". "); //road
+                    } else {
                         color = Color.Khaki;
                     }
+
                     g.FillRectangle(new SolidBrush(color), i * gridSize[0], j * gridSize[1], gridSize[0], gridSize[1]);
                 }
-                //Console.WriteLine("");
             }
             if (solutionPathList != null)
             {
                 int cost = -1;
                 foreach (Node n in solutionPathList)
                 {
-                    cost = n.totalCost>cost?n.totalCost:cost;
+                    cost = n.totalCost; //>cost?n.totalCost:cost;
                     break;
                 }
-                Console.WriteLine("Total Weight: " + cost);
-                this.labelCost.Text = ("Total Weight: " + solutionPathList.ToArray().GetUpperBound(0));
-            }
+                this.labelCost.Text = ("Total Weight: " + cost); //solutionPathList.ToArray().GetUpperBound(0));
+            } else Console.WriteLine("No solution case");
+
+            //Clear the solution by resetting the goal node
+            Map.node_goal.parentNode = null;
         }
 
         private void solve()
         {
-
             ArrayList SolutionPathList = new ArrayList();
 
             //Create a node containing the goal state node_goal
@@ -170,10 +192,10 @@ namespace aStar
             SortedCostNodeList OPEN = new SortedCostNodeList();
             SortedCostNodeList CLOSED = new SortedCostNodeList();
 
-
             //Put node_start on the OPEN list
             OPEN.push(node_start);
 
+            ArrayList successors;
             //while the OPEN list is not empty
             while (OPEN.Count > 0)
             {
@@ -190,7 +212,7 @@ namespace aStar
                 }
 
                 //Generate each state node_successor that can come after node_current
-                ArrayList successors = node_current.GetSuccessors();
+                successors = node_current.GetSuccessors();
 
                 //for each node_successor or node_current
                 foreach (Node node_successor in successors)
@@ -247,6 +269,7 @@ namespace aStar
 
             //follow the parentNode from goal to start node
             //to find solution
+
             Node p = node_goal;
             while (p != null)
             {
@@ -256,9 +279,9 @@ namespace aStar
 
             //display solution
 
-            //Map.PrintSolution (SolutionPathList);
+            Map.PrintSolution (SolutionPathList);
             //Console.ReadLine ();
-            if (SolutionPathList != null)
+            //if (SolutionPathList != null)
                 this.drawSolution(SolutionPathList);
         }
 
@@ -307,6 +330,14 @@ namespace aStar
         {
             //Reset();
             MapForm.allowDiagonal = this.checkBoxDiagonal.Checked;
+        }
+
+        private void MapForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                this.longWallEnabled = false;
+            }
         }
 
     }

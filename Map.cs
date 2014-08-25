@@ -32,8 +32,8 @@ namespace aStar
 
 		static public void PrintSolution(ArrayList solutionPathList)
 		{
-			int yMax =Mapdata.GetUpperBound (0);
-			int xMax =Mapdata.GetUpperBound (1);
+			int yMax = Mapdata.GetUpperBound (0);
+			int xMax = Mapdata.GetUpperBound (1);
 
 			for(int j=0;j<=yMax;j++) 
 			{

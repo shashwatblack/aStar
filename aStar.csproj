@@ -89,6 +89,7 @@
     <Compile Include="aStar.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BresenhamSolution.cs" />
     <Compile Include="MapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
